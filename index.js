@@ -72,11 +72,10 @@ function url(id, type) {
 
 function urlFromFile (file) {
   // in case we deal with other file types
-  let url = ''
   if (file.mimeType === 'application/vnd.google-apps.spreadsheet') {
     return url(file.id, 'spreadsheet')
   }
-  return url + file.id
+  return file.id
 }
 
 module.exports = {
