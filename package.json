@@ -1,6 +1,6 @@
 {
   "name": "google-url-helper",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A tiny library for building and parsing google urls",
   "main": "index.js",
   "scripts": {
