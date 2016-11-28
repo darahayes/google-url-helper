@@ -1,68 +1,87 @@
 'use strict'
 
-var schemas = {
-  spreadsheet: /\/spreadsheets\/d\/([\w-.]+)/,
-  document: /\/document\/d\/([\w-.]+)/,
-  folder: /\/folders\/([\w-.]+)/,
-  file: /\/file\/d\/([\w-.]+)/,
-  form: /\/forms\/d\/([\w-.]+)/,
-  presentation: /\/presentation\/d\/([\w-.]+)/,
-  general: /\/d\/([\w-.]+)/
+var urls = {
+  spreadsheet: {
+    match: /\/spreadsheets\/d\/([\w-.]+)/,
+    base: 'https://docs.google.com/spreadsheets/d/'
+  },
+  document: {
+    match: /\/document\/d\/([\w-.]+)/,
+    base: 'https://docs.google.com/document/d/'
+  },
+  folder: {
+    match: /\/folders\/([\w-.]+)/,
+    base: 'https://drive.google.com/drive/folders/'
+  },
+  file: {
+    match: /\/file\/d\/([\w-.]+)/,
+    base: 'https://drive.google.com/file/d/'
+  },
+  presentation: {
+    match: /\/presentation\/d\/([\w-.]+)/,
+    base: 'https://docs.google.com/presentation/d/'
+  },
+  form: {
+    match: /\/forms\/d\/([\w-.]+)/
+  },
+  general: {
+    match: /\/d\/([\w-.]+)/
+  }
 }
 
-function keyParse (url) {
-  let match = url.match(schemas.general)
+function parseId (url) {
+  let match = url.match(urls.general.match)
   return match ? match[1] : url
 }
 
 function parse (url) {
-  let match = url.match(schemas.spreadsheet)
+  let match = url.match(urls.spreadsheet.match)
   if (match) {
-    return { key: match[1], type: 'spreadsheet' }
+    return { id: match[1], type: 'spreadsheet' }
   }
-  match = url.match(schemas.folder)
+  match = url.match(urls.folder.match)
   if (match) {
-    return { key: match[1], type: 'folder' }
+    return { id: match[1], type: 'folder' }
   }
-  match = url.match(schemas.document)
+  match = url.match(urls.document.match)
   if (match) {
-    return { key: match[1], type: 'document' }
+    return { id: match[1], type: 'document' }
   }
-  match = url.match(schemas.file)
+  match = url.match(urls.file.match)
   if (match) {
-    return { key: match[1], type: 'file' }
+    return { id: match[1], type: 'file' }
   }
-  match = url.match(schemas.form)
+  match = url.match(urls.form.match)
   if (match) {
-    return { key: match[1], type: 'form' }
+    return { id: match[1], type: 'form' }
   }
-  match = url.match(schemas.presentation)
+  match = url.match(urls.presentation.match)
   if (match) {
-    return { key: match[1], type: 'presentation' }
+    return { id: match[1], type: 'presentation' }
   }
-  match = url.match(schemas.general)
+  match = url.match(urls.general.match)
   if (match) {
-    return { key: match[1], type: 'unknown' }
+    return { id: match[1], type: 'unknown' }
   }
   return null
 }
 
-function buildUrl (file) {
+function url(id, type) {
+  return urls[type]['base'] ? urls[type]['base'] + id : null
+}
+
+function urlFromFile (file) {
   // in case we deal with other file types
   let url = ''
   if (file.mimeType === 'application/vnd.google-apps.spreadsheet') {
-    return buildSheetsURLForDocumentId(file.id)
+    return url(file.id, 'spreadsheet')
   }
   return url + file.id
 }
 
-function buildSheetsURLForDocumentId (documentId) {
-  return `https://docs.google.com/spreadsheets/d/${documentId}`
-}
-
 module.exports = {
-  keyParse: keyParse,
+  parseId: parseId,
   parse: parse,
-  buildUrl: buildUrl,
-  buildSheetsURLForDocumentId: buildSheetsURLForDocumentId
+  url: url,
+  urlFromFile: urlFromFile
 }
