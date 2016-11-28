@@ -1,0 +1,32 @@
+{
+  "name": "google-url-helper",
+  "version": "0.0.1",
+  "description": "A tiny library for building and parsing google urls",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js | tap-spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darahayes/google-url-helper.git"
+  },
+  "keywords": [
+    "google",
+    "docs",
+    "sheets",
+    "photos",
+    "drive",
+    "url",
+    "parse"
+  ],
+  "author": "Dara Hayes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/darahayes/google-url-helper/issues"
+  },
+  "homepage": "https://github.com/darahayes/google-url-helper#readme",
+  "devDependencies": {
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3"
+  }
+}
